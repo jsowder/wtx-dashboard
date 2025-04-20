@@ -1,0 +1,17 @@
+/*-- scss:defaults --*/
+
+.dataTables_wrapper {
+  .dataTables_info {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-top: 10 !important;
+    float: left !important;
+  }
+
+  .dt-buttons {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-top: 10 !important;
+    float: right !important;
+  }
+}

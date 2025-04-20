@@ -1,0 +1,61 @@
+meta:
+  name:
+    short: WTX Strong Towns
+    full: Waco's Strong Towns Local Conversation
+  link:
+    home: https://www.strongtownswaco.com
+
+color:
+  palette:
+    strongtowns-blue: "#12223F"  # Strong Towns primary green
+    strongtowns-yellow: "#F4B85E"  # Secondary accent yellow
+    strongtowns-gray: "#58595B"
+    blue: strongtowns-blue
+    yellow: strongtowns-yellow
+    gray: strongtowns-gray
+
+  primary: strongtowns-yellow
+  secondary: strongtowns-blue
+  warning: strongtowns-yellow
+
+typography:
+  fonts:
+    - family: Lato
+      source: google
+      weight: [400, 700]
+      style: [normal, italic]
+    - family: Merriweather
+      source: google
+      weight: [400, 700]
+      style: [normal, italic]
+    - family: Fira Code
+      source: bunny
+      weight: [400, 600]
+      style: [normal]
+
+  base:
+    family: Lato
+    weight: 400
+    size: 16px
+    line-height: 1.5
+
+  headings:
+    family: Merriweather
+    weight: 700
+    style: normal
+    line-height: 1.2
+    color: "#333333"
+
+  monospace:
+    family: Fira Code
+    weight: 400
+    size: 0.9em
+
+  monospace-inline:
+    color: "#2F6652"
+    background-color: "#F9F9F9"
+
+  monospace-block:
+    color: foreground
+    background-color: background
+    line-height: 1.4

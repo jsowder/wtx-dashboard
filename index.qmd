@@ -1,0 +1,91 @@
+---
+title: "wtx"
+format: dashboard
+server: shiny
+---
+
+```{r setup, include=F}
+#| context: setup
+
+library(tidyverse)
+library(wtx)
+library(sf)
+library(shiny)
+library(DT)
+library(mapgl)
+```
+
+# Properties
+
+```{r display_dt}
+DTOutput("table")
+```
+
+# Map
+
+```{r display_map}
+#| eval: true
+#| file: R/map_val_per_acre.R
+```
+
+```{r server}
+#| context: server
+
+output$table <- renderDT({
+  wtx_parcel |> 
+    sf::st_drop_geometry() |> 
+    mutate(across(where(is.character), ~na_if(., "<Null>"))) |> 
+    arrange(desc(market_val)) |> 
+    transmute(
+      property = coalesce(`Property Name`, doingBusinessAs, ownerName, address),
+      `Assessed Value` = market_val,
+      `Monthly Taxes` = estimated_tax / 12,
+      acreage = if_else(acreage < 1, round(acreage, 1), round(acreage, 0)),
+      `Value/Acre` = if_else(acreage >= .05, market_val/acreage, 0),
+      `Tax/Acre` = if_else(acreage >= .05, `Monthly Taxes`/acreage, 0),
+      address,
+    ) |> 
+    rename_with(str_to_title) |> 
+    (\(df) {
+      # Identify numeric columns excluding 'Acreage'
+      numeric_cols <- setdiff(names(df)[sapply(df, is.numeric)], c("Acreage"))
+      
+      # Create the datatable and apply currency formatting
+      datatable(
+        df, 
+        rownames = F,
+        style = "bootstrap",
+        extensions = c("Buttons", "Scroller"),
+        plugins = c("scrollResize", "ellipsis"),
+        options = list(
+          searchHighlight = TRUE,
+          stateSave = TRUE,
+          scrollX = TRUE,
+          scroller = list(
+            displayBuffer = 99
+          ),
+          deferRender = TRUE,
+          scrollCollapse = TRUE,
+          scrollY = 100,
+          scrollResize = TRUE,
+          columnDefs = list(list(
+            targets = c("_all"),
+            render = JS("$.fn.dataTable.render.ellipsis( 12, false )")
+          )),
+          dom = "ftiB",
+          # Download Button
+          buttons = list(
+            list(
+              extend = "csv", 
+              text = "Download Data", 
+              filename = "wtx-data",
+              exportOptions = list(
+                modifier = list(page = "all"),
+                orthogonal = "export"
+              ))
+          )
+        )) |>
+        formatCurrency(columns = numeric_cols, digits = 0)
+    })()
+})
+```

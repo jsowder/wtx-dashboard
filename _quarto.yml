@@ -1,0 +1,8 @@
+project:
+  title: "wtx-dashboard"
+theme:
+  - default
+  - brand
+  - tweaks.scss
+
+
