@@ -12,7 +12,7 @@ RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
 RUN gdebi --non-interactive quarto-linux-amd64.deb
 
 # Install R packages
-RUN R -e "install.packages(c('shiny', 'quarto', 'tidyverse', 'sf', 'DT', 'mapgl', 'remotes'))"
+RUN R -e "install.packages(c('shiny', 'quarto', 'tidyverse', 'sf', 'DT', 'mapgl', 'remotes'), type = 'source')"
 RUN R -e "remotes::install_github('jsowder/wtx')"
 
 # Configure Shiny Server
